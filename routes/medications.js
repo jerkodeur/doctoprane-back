@@ -5,6 +5,7 @@ const connexion = require('../conf')
 
 let today = new Date().toISOString().slice(0, 10)
 
+// Create a new medication
 router.post('/', (req, res) => {
   connexion.query('INSERT INTO medication SET ?', req.body, (err, result) => {
     if (err) {
@@ -41,8 +42,8 @@ router.post('/', (req, res) => {
   })
 })
 
+//
 router.put('/:med_id', (req, res) => {
-
   connexion.query(`UPDATE medication SET used = !used, last_take = NOW()  WHERE id = ?`, [req.params.med_id], (err, result) => {
     if (err) {
       return res.status(500).json({

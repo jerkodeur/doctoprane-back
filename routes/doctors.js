@@ -5,7 +5,21 @@ const connexion = require('../conf')
 
 let today = new Date().toISOString().slice(0, 10)
 
-// Fetch the list of the patient (for the doctor)
+// Fetch the list of all the patient (for the doctor)
+router.get('/', (req, res) => {
+  let request = 'SELECT id, firstname, lastname FROM patient '
+  connexion.query(request, (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        message: err.message,
+        sql: err.sql
+      })
+    }
+    return res.status(200).json(result)
+  })
+})
+
+// Fetch the list of medication of one patient (for the doctor)
 router.get('/:id', (req, res) => {
   let request = 'SELECT p.id, p.firstname, p.lastname FROM patient p '
   request += 'JOIN medication m ON p.id = m.patient_id '
