@@ -2,6 +2,7 @@ const express = require('express')
 
 const router = express.Router()
 const connexion = require('../conf')
+const { query } = require('express')
 
 let today = new Date().toISOString().slice(0, 10)
 
@@ -43,8 +44,9 @@ router.post('/', (req, res) => {
 })
 
 //
-router.put('/:med_id', (req, res) => {
-  connexion.query(`UPDATE medication SET used = !used, last_take = NOW()  WHERE id = ?`, [req.params.med_id], (err, result) => {
+router.put('/:patient_id/order/:order', (req, res) => {
+  const { patient_id, order } = req.params
+  connexion.query(`UPDATE medication SET used = !used, last_update = NOW()  WHERE patient_id = ? AND order_name = ?`, [patient_id, order], (err, result) => {
     if (err) {
       return res.status(500).json({
         message: err.message,
